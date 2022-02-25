@@ -22,7 +22,8 @@
   "homepage": "https://github.com/EmilyRoseCotter/book-library-api#readme",
   "dependencies": {
     "express": "^4.17.3",
-    "mysql2": "^2.3.3"
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.17.0"
   },
   "devDependencies": {
     "chai": "^4.3.6",
