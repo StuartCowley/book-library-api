@@ -26,7 +26,6 @@ describe('/readers', () => {
         expect(response.body.name).to.equal('Elizabeth Bennet');
         expect(newReaderRecord.name).to.equal('Elizabeth Bennet');
         expect(newReaderRecord.email).to.equal('future_ms_darcy@gmail.com');
-        expect(newReaderRecord.password).to.equal('MrDarcy1234');
       });
     });
   });
@@ -41,8 +40,16 @@ describe('/readers', () => {
           email: 'future_ms_darcy@gmail.com',
           password: 'MrDarcy1234',
         }),
-        Reader.create({ name: 'Arya Stark', email: 'vmorgul@me.com', password: 'HouseStark1234' }),
-        Reader.create({ name: 'Lyra Belacqua', email: 'darknorth123@msn.org', password: 'darknorth1234' }),
+        Reader.create({ 
+          name: 'Arya Stark', 
+          email: 'vmorgul@me.com', 
+          password: 'HouseStark1234' 
+        }),
+        Reader.create({ 
+          name: 'Lyra Belacqua', 
+          email: 'darknorth123@msn.org', 
+          password: 'darknorth1234' 
+        }),
       ]);
     });
 
@@ -58,7 +65,6 @@ describe('/readers', () => {
 
           expect(reader.name).to.equal(expected.name);
           expect(reader.email).to.equal(expected.email);
-          expect(reader.password).to.equal(expected.password);
         });
       });
     });
