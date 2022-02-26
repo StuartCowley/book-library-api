@@ -6,4 +6,9 @@ const createBookController = async (req, res) => {
   res.status(201).json(newBook);
 };
 
-module.exports = { createBookController };
+const readBooksController = async (req, res) => {
+  const books = await Book.findAll();
+  res.status(200).json(books);
+}
+
+module.exports = { createBookController, readBooksController };

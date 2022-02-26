@@ -32,4 +32,49 @@ describe('/books', () => {
             });
         });
     });
-})
+    
+    describe('with books in the database', () => {
+        let books;
+
+        beforeEach(async () => {
+            books = await Promise.all([
+                Book.create({
+                    title: 'Pride and prejudice',
+                    author: 'Jane Austin',
+                    genre: 'Romance',
+                    ISBN: '9780140430721',
+                }),
+                Book.create({ 
+                    title: 'The Illiad', 
+                    author: 'Homer', 
+                    genre: 'Epic poetry', 
+                    ISBN: '9780800042011'
+                }),
+                Book.create({
+                    title: 'Nineteen Eighty-Four',
+                    author: 'George Orwell',
+                    genre: 'Dystopian',
+                    ISBN: '9780140817744'
+                }),
+            ]);
+        });   
+
+            describe('GET /books', () => {
+                it('gets all books records', async () => {
+                    const response = await request(app).get('/books');
+
+                    expect(response.status).to.equal(200);
+                    expect(response.body.length).to.equal(3);
+
+                    response.body.forEach((book) => {
+                        const expected = books.find((a) => a.id === book.id);
+
+                        expect(book.title).to.equal(expected.title);
+                        expect(book.author).to.equal(expected.author);
+                        expect(book.genre).to.equal(expected.genre);
+                        expect(book.ISBN).to.equal(expected.ISBN);
+                    });
+                });
+            });
+    });
+});

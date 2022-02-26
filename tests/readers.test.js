@@ -39,6 +39,7 @@ describe('/readers', () => {
         Reader.create({
           name: 'Elizabeth Bennet',
           email: 'future_ms_darcy@gmail.com',
+          password: 'MrDarcy1234',
         }),
         Reader.create({ name: 'Arya Stark', email: 'vmorgul@me.com', password: 'HouseStark1234' }),
         Reader.create({ name: 'Lyra Belacqua', email: 'darknorth123@msn.org', password: 'darknorth1234' }),
@@ -57,6 +58,7 @@ describe('/readers', () => {
 
           expect(reader.name).to.equal(expected.name);
           expect(reader.email).to.equal(expected.email);
+          expect(reader.password).to.equal(expected.password);
         });
       });
     });
