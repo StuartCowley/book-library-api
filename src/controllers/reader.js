@@ -1,3 +1,4 @@
+const e = require('express');
 const { Reader } = require('../models');
 
 const createReaderController = async (req, res) => {
@@ -21,6 +22,17 @@ const getReaderById = async (req, res) => {
     }
 };
 
-// const updateReader = async (req, res) => {};
+const updateReader = async (req, res) => {
+    const readerId = req.params.id;
+    const updateData = req.body;
 
-module.exports = { createReaderController, readReadersController, getReaderById };
+    const [ updatedRows ] = await Reader.update(updateData, { where : {id: req.params.id} });
+
+    if (!updatedRows) {
+        res.status(404).json({ error: 'The reader could not be found.'});
+    } else {
+    res.status(200).send();
+    }
+};
+
+module.exports = { createReaderController, readReadersController, getReaderById, updateReader };
