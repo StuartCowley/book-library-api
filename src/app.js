@@ -10,6 +10,6 @@ app.use(express.json());
 
 app.use('/readers', readerRouter);
 
-app.use('books', bookRouter);
+app.use('/books', bookRouter);
 
 module.exports = app;
