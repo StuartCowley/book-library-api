@@ -76,5 +76,22 @@ describe('/books', () => {
                     });
                 });
             });
+
+            describe('GET /books/:id', () => {
+                it('gets book records by id', async () => {
+                    const book = books[0];
+                    const response = await request(app).get(`/books/${book.id}`);
+
+                    expect(response.status).to.equal(200);
+                    expect(response.body.title).to.equal(book.title);
+                });
+
+                it('returns a 404 if the book does not exist', async () => {
+                    const response = await request(app).get('/books/12345');
+
+                    expect(response.status).to.equal(404);
+                    expect(response.body.error).to.equal('The book could not be found');
+                });
+            });
     });
 });
