@@ -26,7 +26,7 @@ const updateReader = async (req, res) => {
     const readerId = req.params.id;
     const updateData = req.body;
 
-    const [ updatedRows ] = await Reader.update(updateData, { where : {id: req.params.id} });
+    const [ updatedRows ] = await Reader.update(updateData, { where : {id: readerId } });
 
     if (!updatedRows) {
         res.status(404).json({ error: 'The reader could not be found.'});
@@ -35,4 +35,15 @@ const updateReader = async (req, res) => {
     }
 };
 
-module.exports = { createReaderController, readReadersController, getReaderById, updateReader };
+const deleteReader = async (req, res) => {
+    const readerId = req.params.id;
+    const deletedRows = await Reader.destroy({ where: { id: readerId } });
+
+    if (!deletedRows) {
+        res.status(404).json({ error: 'The reader could not be found.'});
+    } else {
+    res.status(204).send();
+    }
+};
+
+module.exports = { createReaderController, readReadersController, getReaderById, updateReader, deleteReader };
