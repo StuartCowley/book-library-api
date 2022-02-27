@@ -1,12 +1,12 @@
 const express = require('express');
 const { Book } = require('../models');
 
-const createBookController = async (req, res) => {
+const createBook = async (req, res) => {
   const newBook = await Book.create(req.body);
   res.status(201).json(newBook);
 };
 
-const readBooksController = async (req, res) => {
+const readBooks = async (req, res) => {
   const books = await Book.findAll();
   res.status(200).json(books);
 };
@@ -22,4 +22,17 @@ const getBookById = async (req, res) => {
   }
 };
 
-module.exports = { createBookController, readBooksController, getBookById };
+const updateBook = async (req, res) => {
+  const bookId = req.params.id;
+  const updateData = req.body;
+
+  const [ updatedRows ] = await Book.update(updateData, { where : {id: bookId} });
+
+  if (!updatedRows) {
+    res.status(404).json({ error: 'The book could not be found.' });
+  } else {
+    res.status(200).send();
+  }
+};
+
+module.exports = { createBook, readBooks, getBookById, updateBook };

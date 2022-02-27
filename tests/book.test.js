@@ -93,5 +93,29 @@ describe('/books', () => {
                     expect(response.body.error).to.equal('The book could not be found.');
                 });
             });
+
+            describe('PATCH /books/:id', () => {
+                it('updates book by id', async () => {
+                    const book = books[0];
+                    const response = await request(app)
+                    .patch(`/books/${book.id}`)
+                    .send({ title: 'Pride and Prejudice'});
+                    const updateBookRecord = await Book.findByPk(book.id, {
+                        raw: true
+                    });
+
+                    expect(response.status).to.equal(200);
+                    expect(updateBookRecord.title).to.equal('Pride and Prejudice');
+                });
+
+                it('returns a 404 if book does not exist', async () => {
+                    const response = await request(app)
+                    .patch('/books/12345')
+                    .send({ title: 'some book'});
+
+                    expect(response.status).to.equal(404);
+                    expect(response.body.error).to.equal('The book could not be found.')
+                });
+            });
     });
 });
