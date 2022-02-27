@@ -1,12 +1,12 @@
 const express = require('express');
 const { Reader } = require('../models');
 
-const createReaderController = async (req, res) => {
+const createReader = async (req, res) => {
     const newReader = await Reader.create(req.body);
     res.status(201).json(newReader);
 };
 
-const readReadersController = async (req, res) => {
+const readReaders = async (req, res) => {
     const readers = await Reader.findAll();
     res.status(200).json(readers);
 };
@@ -46,4 +46,4 @@ const deleteReader = async (req, res) => {
     }
 };
 
-module.exports = { createReaderController, readReadersController, getReaderById, updateReader, deleteReader };
+module.exports = { createReader, readReaders, getReaderById, updateReader, deleteReader };
