@@ -67,7 +67,7 @@ describe('/readers', () => {
         expect(newReaderRecord).to.equal(null);
       });
 
-      it('errors if email is empty', async () => {
+      it('errors if email is empty string', async () => {
         const response = await request(app).post('/readers').send({
           name: 'Elizabeth Bennet',
           email: '',
@@ -85,6 +85,32 @@ describe('/readers', () => {
           name: 'Elizabeth Bennet',
           email: null,
           password: '12345667895678',
+        });
+        const newReaderRecord = await Reader.findByPk(response.body.id);
+
+        expect(response.status).to.equal(400);
+        expect(response.body).to.haveOwnProperty('errors');
+        expect(newReaderRecord).to.equal(null);
+      });
+
+      it('errors if password is null', async () => {
+        const response = await request(app).post('/readers').send({
+          name: 'Elizabeth Bennet',
+          email: 'email@domain.com',
+          password: null,
+        });
+        const newReaderRecord = await Reader.findByPk(response.body.id);
+
+        expect(response.status).to.equal(400);
+        expect(response.body).to.haveOwnProperty('errors');
+        expect(newReaderRecord).to.equal(null);
+      });
+
+      it('errors if password is less than 8 characters', async () => {
+        const response = await request(app).post('/readers').send({
+          name: 'Elizabeth Bennet',
+          email: 'email@domain.com',
+          password: '1234',
         });
         const newReaderRecord = await Reader.findByPk(response.body.id);
 
