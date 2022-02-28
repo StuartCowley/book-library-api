@@ -31,8 +31,8 @@ describe('/readers', () => {
       it('errors if name is an empty string', async () => {
         const response = await request(app).post('/readers').send({
           name: '',
-          password: '12345667895678',
           email: 'email@domain.com',
+          password: '12345667895678',
         });
         const newReaderRecord = await Reader.findByPk(response.body.id);
 
@@ -44,8 +44,47 @@ describe('/readers', () => {
       it('errors if name is null', async () => {
         const response = await request(app).post('/readers').send({
           name: null,
-          password: '12345667895678',
           email: 'email@domain.com',
+          password: '12345667895678',
+        });
+        const newReaderRecord = await Reader.findByPk(response.body.id);
+
+        expect(response.status).to.equal(400);
+        expect(response.body).to.haveOwnProperty('errors');
+        expect(newReaderRecord).to.equal(null);
+      });
+
+      it('errors if email is not correct format', async () => {
+        const response = await request(app).post('/readers').send({
+          name: 'Elizabeth Bennet',
+          email: 'emaildomain.com',
+          password: '12345667895678',
+        });
+        const newReaderRecord = await Reader.findByPk(response.body.id);
+
+        expect(response.status).to.equal(400);
+        expect(response.body).to.haveOwnProperty('errors');
+        expect(newReaderRecord).to.equal(null);
+      });
+
+      it('errors if email is empty', async () => {
+        const response = await request(app).post('/readers').send({
+          name: 'Elizabeth Bennet',
+          email: '',
+          password: '12345667895678',
+        });
+        const newReaderRecord = await Reader.findByPk(response.body.id);
+
+        expect(response.status).to.equal(400);
+        expect(response.body).to.haveOwnProperty('errors');
+        expect(newReaderRecord).to.equal(null);
+      });
+
+      it('errors if email is null', async () => {
+        const response = await request(app).post('/readers').send({
+          name: 'Elizabeth Bennet',
+          email: null,
+          password: '12345667895678',
         });
         const newReaderRecord = await Reader.findByPk(response.body.id);
 
