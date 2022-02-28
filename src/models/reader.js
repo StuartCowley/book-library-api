@@ -9,6 +9,7 @@ module.exports = (connection, DataTypes) => {
                     msg: 'Please enter your name',
                 },
                 notNull: {
+                    args: [true],
                     msg: 'Please enter your name',
                 },
             },
@@ -36,6 +37,7 @@ module.exports = (connection, DataTypes) => {
             allowNull: false,
             validate: {
                 notNull: {
+                    args: [true],
                     msg: 'Please enter a password of at least 8 characters',
                 },
                 len: {

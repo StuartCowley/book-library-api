@@ -2,8 +2,15 @@ const express = require('express');
 const { Reader } = require('../models');
 
 const createReader = async (req, res) => {
-    const newReader = await Reader.create(req.body);
-    res.status(201).json(newReader);
+    try {
+        const newReader = await Reader.create(req.body);
+        console.log(newReader);
+        res.status(201).json(newReader);
+    } 
+    catch (err) {
+        console.error(err);
+        res.status(500);
+    };
 };
 
 const readReaders = async (req, res) => {

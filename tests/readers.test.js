@@ -4,7 +4,7 @@ const { Reader } = require('../src/models');
 const app = require('../src/app');
 
 describe('/readers', () => {
-  before(async () => Reader.sequelize.sync());
+  before(async () => await Reader.sequelize.sync());
 
   beforeEach(async () => {
     await Reader.destroy({ where: {} });
@@ -26,6 +26,21 @@ describe('/readers', () => {
         expect(response.body.name).to.equal('Elizabeth Bennet');
         expect(newReaderRecord.name).to.equal('Elizabeth Bennet');
         expect(newReaderRecord.email).to.equal('future_ms_darcy@gmail.com');
+      });
+      
+      it('errors if name is an empty string', async () => {
+        const response = await request(app).post('/readers').send({
+          name: '',
+          password: '12345667895678',
+          email: 'email@domain.com',
+        });
+        const newReaderRecord = await Reader.findByPk(response.body.id, {
+          raw: true,
+        });
+
+        expect(response.status).to.equal(400);
+        expect(response.body.errors.length).to.equal(1);
+        expect(newReaderRecord).to.equal(null);
       });
     });
   });
