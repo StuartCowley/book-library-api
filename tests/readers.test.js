@@ -34,12 +34,10 @@ describe('/readers', () => {
           password: '12345667895678',
           email: 'email@domain.com',
         });
-        const newReaderRecord = await Reader.findByPk(response.body.id, {
-          raw: true,
-        });
+        const newReaderRecord = await Reader.findByPk(response.body.id);
 
         expect(response.status).to.equal(400);
-        expect(response.body.errors.length).to.equal(1);
+        expect(response.body).to.haveOwnProperty('errors');
         expect(newReaderRecord).to.equal(null);
       });
     });

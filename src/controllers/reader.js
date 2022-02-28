@@ -4,12 +4,11 @@ const { Reader } = require('../models');
 const createReader = async (req, res) => {
     try {
         const newReader = await Reader.create(req.body);
-        console.log(newReader);
-        res.status(201).json(newReader);
+        return res.status(201).json(newReader);
     } 
     catch (err) {
-        console.error(err);
-        res.status(500);
+        const errorMessages = err.errors.map((element) => element.message);
+        return res.status(400).json({ errors: errorMessages });
     };
 };
 
