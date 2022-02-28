@@ -40,6 +40,19 @@ describe('/readers', () => {
         expect(response.body).to.haveOwnProperty('errors');
         expect(newReaderRecord).to.equal(null);
       });
+
+      it('errors if name is null', async () => {
+        const response = await request(app).post('/readers').send({
+          name: null,
+          password: '12345667895678',
+          email: 'email@domain.com',
+        });
+        const newReaderRecord = await Reader.findByPk(response.body.id);
+
+        expect(response.status).to.equal(400);
+        expect(response.body).to.haveOwnProperty('errors');
+        expect(newReaderRecord).to.equal(null);
+      });
     });
   });
 
