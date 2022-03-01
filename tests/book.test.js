@@ -13,22 +13,78 @@ describe('/books', () => {
   describe('with no records in the database', () => {
     describe('POST /books', () => {
         it('creates a new book in the database', async () => {
-            const response = await request(app).post('/books').send({
-                title: 'Pride and prejudice',
-                author: 'Jane Austin',
-                genre: 'Romance',
-                ISBN: '9780140430721',
-            });
-            const newBookRecord = await Book.findByPk(response.body.id, {
-                raw: true,
-            });
+          const response = await request(app).post('/books').send({
+            title: 'Pride and prejudice',
+            author: 'Jane Austin',
+            genre: 'Romance',
+            ISBN: '9780140430721',
+          });
+          const newBookRecord = await Book.findByPk(response.body.id, {
+            raw: true,
+          });
 
-            expect(response.status).to.equal(201);
-            expect(response.body.title).to.equal('Pride and prejudice');
-            expect(newBookRecord.title).to.equal('Pride and prejudice');
-            expect(newBookRecord.author).to.equal('Jane Austin');
-            expect(newBookRecord.genre).to.equal('Romance');
-            expect(newBookRecord.ISBN).to.equal('9780140430721');
+          expect(response.status).to.equal(201);
+          expect(response.body.title).to.equal('Pride and prejudice');
+          expect(newBookRecord.title).to.equal('Pride and prejudice');
+          expect(newBookRecord.author).to.equal('Jane Austin');
+          expect(newBookRecord.genre).to.equal('Romance');
+          expect(newBookRecord.ISBN).to.equal('9780140430721');
+        });
+
+        it('errors if title is an empty string', async () => {
+          const response = await request(app).post('/books').send({
+            title: '',
+            author: 'Jane Austin',
+            genre: 'Romance',
+            ISBN: '9780140430721',
+          });
+          const newBookRecord = await Book.findByPk(response.body.id);
+    
+          expect(response.status).to.equal(400);
+          expect(response.body).to.haveOwnProperty('errors');
+          expect(newBookRecord).to.equal(null);
+        });
+
+        it('errors if title is null', async () => {
+          const response = await request(app).post('/books').send({
+            title: null,
+            author: 'Jane Austin',
+            genre: 'Romance',
+            ISBN: '9780140430721',
+          });
+          const newBookRecord = await Book.findByPk(response.body.id);
+    
+          expect(response.status).to.equal(400);
+          expect(response.body).to.haveOwnProperty('errors');
+          expect(newBookRecord).to.equal(null);
+        });
+
+        it('errors if author is an empty string', async () => {
+          const response = await request(app).post('/books').send({
+            title: 'Pride and prejudice',
+            author: '',
+            genre: 'Romance',
+            ISBN: '9780140430721',
+          });
+          const newBookRecord = await Book.findByPk(response.body.id);
+    
+          expect(response.status).to.equal(400);
+          expect(response.body).to.haveOwnProperty('errors');
+          expect(newBookRecord).to.equal(null);
+        });
+
+        it('errors if author is null', async () => {
+          const response = await request(app).post('/books').send({
+            title: 'Pride and prejudice',
+            author: null,
+            genre: 'Romance',
+            ISBN: '9780140430721',
+          });
+          const newBookRecord = await Book.findByPk(response.body.id);
+    
+          expect(response.status).to.equal(400);
+          expect(response.body).to.haveOwnProperty('errors');
+          expect(newBookRecord).to.equal(null);
         });
     });
   });
@@ -38,24 +94,24 @@ describe('/books', () => {
 
     beforeEach(async () => {
         books = await Promise.all([
-            Book.create({
-                title: 'Pride and prejudice',
-                author: 'Jane Austin',
-                genre: 'Romance',
-                ISBN: '9780140430721',
-            }),
-            Book.create({ 
-                title: 'The Illiad', 
-                author: 'Homer', 
-                genre: 'Epic poetry', 
-                ISBN: '9780800042011'
-            }),
-            Book.create({
-                title: 'Nineteen Eighty-Four',
-                author: 'George Orwell',
-                genre: 'Dystopian',
-                ISBN: '9780140817744'
-            }),
+          Book.create({
+            title: 'Pride and prejudice',
+            author: 'Jane Austin',
+            genre: 'Romance',
+            ISBN: '9780140430721',
+          }),
+          Book.create({ 
+            title: 'The Illiad', 
+            author: 'Homer', 
+            genre: 'Epic poetry', 
+            ISBN: '9780800042011'
+          }),
+          Book.create({
+            title: 'Nineteen Eighty-Four',
+            author: 'George Orwell',
+            genre: 'Dystopian',
+            ISBN: '9780140817744'
+          }),
         ]);
     });   
 

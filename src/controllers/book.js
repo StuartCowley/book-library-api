@@ -2,8 +2,14 @@ const express = require('express');
 const { Book } = require('../models');
 
 const createBook = async (req, res) => {
-  const newBook = await Book.create(req.body);
-  res.status(201).json(newBook);
+  try {
+    const newBook = await Book.create(req.body);
+    res.status(201).json(newBook);
+  }
+  catch (err) {
+    const errorMessages = err.errors.map((element) => element.message);
+    return res.status(400).json({ errors: errorMessages });
+  };
 };
 
 const readBooks = async (req, res) => {
