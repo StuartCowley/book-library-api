@@ -1,6 +1,6 @@
 const {Book, Reader } = require('../models');
 
-// const get404Error = (model) => ({ error: `The ${model} could not be found.`});
+const get404Error = (model) => ({ error: `The ${model} could not be found.`});
 
 const getModel = (model) => {
     const models = {
@@ -19,7 +19,7 @@ const removePassword = (obj) => {
     return obj;
   };
 
-const createItem = async (res, model, item) => {
+  const createItem = async (res, model, item) => {
     const Model = getModel(model);
   
     try {
@@ -46,8 +46,22 @@ const getAllItems = async (res, model) => {
     res.status(200).json(itemsWithoutPassword);
 };
 
+const getItemById = async (res, model, id) => {
+    const Model = getModel(model);
+
+    const item = await Model.findByPk(id);
+
+    if (!item) {
+        res.status(404).json(get404Error(model))
+      } else {
+        res.status(200).json(item);
+      }
+
+}
+
 
 module.exports = {
     createItem, 
-    getAllItems
+    getAllItems,
+    getItemById
 };
