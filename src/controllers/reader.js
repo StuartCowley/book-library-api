@@ -1,21 +1,10 @@
 const express = require('express');
 const { Reader } = require('../models');
+const { createItem, getAllItems } = require('./helpers');
 
-const createReader = async (req, res) => {
-    try {
-        const newReader = await Reader.create(req.body);
-        return res.status(201).json(newReader);
-    } 
-    catch (err) {
-        const errorMessages = err.errors.map((element) => element.message);
-        return res.status(400).json({ errors: errorMessages });
-    };
-};
+const createReader = (req, res) => createItem(res, 'reader', req.body);
 
-const readReaders = async (req, res) => {
-    const readers = await Reader.findAll();
-    res.status(200).json(readers);
-};
+const readReaders = (_, res) => getAllItems(res, 'reader');
 
 const getReaderById = async (req, res) => {
     const readerId = req.params.id;
