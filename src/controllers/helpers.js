@@ -73,7 +73,6 @@ const updateItemById = async (res, model, item, id) => {
   }
 };
 
-
 module.exports = {
     createItem, 
     getAllItems,
