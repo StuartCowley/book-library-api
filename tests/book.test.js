@@ -39,6 +39,34 @@ describe('/books', () => {
           expect(response.body).to.haveOwnProperty('errors');
           expect(newBookRecord).to.equal(null);
         });
+
+        it('errors if title is empty string', async () => {
+          const response = await request(app).post('/readers').send({
+            title: '',
+            author: 'Jane Austin',
+            genre: 'Romance',
+            ISBN: '9780140430721',
+          });
+          const newBookRecord = await Book.findByPk(response.body.id);
+  
+          expect(response.status).to.equal(400);
+          expect(response.body).to.haveOwnProperty('errors');
+          expect(newBookRecord).to.equal(null);
+        });
+
+        it('errors if author is empty string', async () => {
+          const response = await request(app).post('/readers').send({
+            title: 'Pride and prejudice',
+            author: '',
+            genre: 'Romance',
+            ISBN: '9780140430721',
+          });
+          const newBookRecord = await Book.findByPk(response.body.id);
+  
+          expect(response.status).to.equal(400);
+          expect(response.body).to.haveOwnProperty('errors');
+          expect(newBookRecord).to.equal(null);
+        });
     });
   });
     
