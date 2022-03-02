@@ -73,9 +73,22 @@ const updateItemById = async (res, model, item, id) => {
   }
 };
 
+const deleteItemById = async (res, model, id) => {
+  const Model = getModel(model);
+
+  const deletedItem = await Model.destroy({ where: { id } });
+
+  if (!deletedItem) {
+    res.status(404).json(get404Error(model));
+  } else {
+    res.status(204).send();
+  };
+};
+
 module.exports = {
     createItem, 
     getAllItems,
     getItemById,
-    updateItemById
+    updateItemById,
+    deleteItemById
 };

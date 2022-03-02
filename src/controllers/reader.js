@@ -1,6 +1,12 @@
 const express = require('express');
 const { Reader } = require('../models');
-const { createItem, getAllItems, getItemById, updateItemById } = require('./helpers');
+const { 
+    createItem, 
+    getAllItems, 
+    getItemById, 
+    updateItemById,
+    deleteItemById, 
+} = require('./helpers');
 
 const createReader = (req, res) => createItem(res, 'reader', req.body);
 
@@ -21,4 +27,10 @@ const deleteReader = async (req, res) => {
     }
 };
 
-module.exports = { createReader, readReaders, getReaderById, updateReader, deleteReader };
+module.exports = { 
+    createReader, 
+    readReaders, 
+    getReaderById, 
+    updateReader, 
+    deleteReader 
+};
