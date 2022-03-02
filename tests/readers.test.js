@@ -166,6 +166,7 @@ describe('/readers', () => {
 
         expect(response.status).to.equal(200);
         expect(updatedReaderRecord.email).to.equal('miss_e_bennet@gmail.com');
+        expect(response.password).to.equal(undefined);
       });
 
       it('returns a 404 if the reader does not exist', async () => {
