@@ -3,19 +3,20 @@ module.exports = (connection, DataTypes) => {
         author: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
             validate: {
                 notEmpty: {
                     args: [true],
-                    msg: 'A author must be entered.',
+                    msg: 'An author must be entered.',
                 },
                 notNull: {
                     args: [true],
-                    msg: 'A author must be entered.',
+                    msg: 'An author must be entered.',
                 },
             },
         },
     };
 
-    const AuthorModel = connection.define('author', schema);
+    const AuthorModel = connection.define('Author', schema);
     return AuthorModel;
 };
