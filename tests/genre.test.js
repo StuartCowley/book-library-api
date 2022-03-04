@@ -70,7 +70,7 @@ describe('/genres', () => {
                 const genreData = genres[0].genre;
                 const response = await request(app).post('/genres').send(genreData);
                 console.log(response.body);
-                expect(response.status).to.equal(500);
+                expect(response.status).to.equal(400);
             });
         });
 
@@ -92,7 +92,7 @@ describe('/genres', () => {
         describe('GET /genres/:id', () => {
             it('gets genre records by id', async () => {
                 const genre = genres[0];
-                const response = await request(app).get(`/books/${genre.id}`);
+                const response = await request(app).get(`/genres/${genre.id}`);
     
                 expect(response.status).to.equal(200);
                 expect(response.body.genre).to.equal(genre.genre);
