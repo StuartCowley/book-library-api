@@ -28,9 +28,6 @@ module.exports = (connection, DataTypes) => {
                 },
             },
         },
-        genre: {
-            type: DataTypes.STRING,
-        },
         ISBN: {
             type: 
             DataTypes.STRING,

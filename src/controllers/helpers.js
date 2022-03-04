@@ -48,17 +48,26 @@ const getAllItems = async (res, model) => {
   res.status(200).json(itemsWithoutPassword);
 };
 
-const getItemById = async (res, model, id) => {
+const getItemById = (res, model, id) => {
   const Model = getModel(model);
 
-  const item = await Model.findByPk(id);
+  return Model.findByPk(id, { includes: Genre }).then((item) => {
+    if (!item) {
+      res.status(404).json(get404Error(model));
+    } else {
+      const itemWithoutPassword = removePassword(item.dataValues);
 
-  if (!item) {
-    res.status(404).json(get404Error(model));
-  } else {
-    const itemWithoutPassword = removePassword(item.dataValues);
-    res.status(200).json(itemWithoutPassword);
-  }
+      res.status(200).json(itemWithoutPassword);
+    }
+  });
+};
+
+const getAllBooks = (res, model) => {
+  const Model = getModel(model);
+
+  return Model.findAll({ include: Book }).then((items) => {
+    res.status(200).json(items);
+  });
 };
 
 const updateItemById = async (res, model, item, id) => {
@@ -92,5 +101,6 @@ module.exports = {
     getAllItems,
     getItemById,
     updateItemById,
-    deleteItemById
+    deleteItemById,
+    getAllBooks,
 };

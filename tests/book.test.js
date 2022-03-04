@@ -22,12 +22,10 @@ describe('/books', () => {
           expect(response.status).to.equal(201);
           expect(response.body.title).to.equal('Pride and prejudice');
           expect(response.body.author).to.equal('Jane Austin');
-          expect(response.body.genre).to.equal('Romance');
           expect(response.body.ISBN).to.equal('9780140430721');
 
           expect(newBookRecord.title).to.equal('Pride and prejudice');
           expect(newBookRecord.author).to.equal('Jane Austin');
-          expect(newBookRecord.genre).to.equal('Romance');
           expect(newBookRecord.ISBN).to.equal('9780140430721');
         });
 
