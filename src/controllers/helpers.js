@@ -62,14 +62,6 @@ const getItemById = (res, model, id) => {
   });
 };
 
-const getAllBooks = (res, model) => {
-  const Model = getModel(model);
-
-  return Model.findAll({ include: Book }).then((items) => {
-    res.status(200).json(items);
-  });
-};
-
 const updateItemById = async (res, model, item, id) => {
   const Model = getModel(model);
 
@@ -102,5 +94,4 @@ module.exports = {
     getItemById,
     updateItemById,
     deleteItemById,
-    getAllBooks,
 };

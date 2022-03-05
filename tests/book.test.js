@@ -1,18 +1,29 @@
 const { expect } = require('chai');
 const request = require('supertest');
-const { Book } = require('../src/models');
+const { Book, Genre, Author } = require('../src/models');
 const app = require('../src/app');
 
 describe('/books', () => {
+  let testGenre;
+  let testAuthor;
+
   before(async () => Book.sequelize.sync());
 
   describe('with no records in the database', () => {
+    beforeEach(async () => {
+      await Book.destroy({ where: {} });
+      await Genre.destroy({ where: {} });
+      await Author.destroy({ where: {} });
+      testGenre = await Genre.create({ genre: 'Romance' });
+      testAuthor = await Author.create({ author: 'Jane Austin' });
+    });
+
     describe('POST /books', () => {
         it('creates a new book in the database', async () => {
           const response = await request(app).post('/books').send({
             title: 'Pride and prejudice',
-            author: 'Jane Austin',
-            genre: 'Romance',
+            author: testAuthor.id,
+            genre: testGenre.id,
             ISBN: '9780140430721',
           });
           const newBookRecord = await Book.findByPk(response.body.id, {
@@ -21,11 +32,9 @@ describe('/books', () => {
 
           expect(response.status).to.equal(201);
           expect(response.body.title).to.equal('Pride and prejudice');
-          expect(response.body.author).to.equal('Jane Austin');
           expect(response.body.ISBN).to.equal('9780140430721');
 
           expect(newBookRecord.title).to.equal('Pride and prejudice');
-          expect(newBookRecord.author).to.equal('Jane Austin');
           expect(newBookRecord.ISBN).to.equal('9780140430721');
         });
 
@@ -41,8 +50,8 @@ describe('/books', () => {
         it('errors if title is empty string', async () => {
           const response = await request(app).post('/readers').send({
             title: '',
-            author: 'Jane Austin',
-            genre: 'Romance',
+            author: testAuthor.id,
+            genre: testGenre.id,
             ISBN: '9780140430721',
           });
           const newBookRecord = await Book.findByPk(response.body.id);
@@ -56,7 +65,7 @@ describe('/books', () => {
           const response = await request(app).post('/readers').send({
             title: 'Pride and prejudice',
             author: '',
-            genre: 'Romance',
+            genre: testGenre.id,
             ISBN: '9780140430721',
           });
           const newBookRecord = await Book.findByPk(response.body.id);
@@ -73,24 +82,48 @@ describe('/books', () => {
 
     beforeEach(async () => {
         await Book.destroy({ where: {} });
-        
+
+          const testAuthorOne = Author.create({
+            author: 'Jane Austin'
+          });
+
+          const testAuthorTwo = Author.create({
+            author: 'Homer'
+          });
+
+          const testAuthorThree = Author.create({
+            author: 'George Orwell'
+          }); 
+
+          const testGenreOne = Genre.create({
+            genre: 'Romance'
+          });
+
+          const testGenreTwo = Genre.create({
+            genre: 'Epic poetry'
+          });
+
+          const testGenreThree = Genre.create({
+            genre: 'Dystopian'
+          });
+
         books = await Promise.all([
           Book.create({
             title: 'Pride and prejudice',
-            author: 'Jane Austin',
-            genre: 'Romance',
+            author: testAuthorOne.id,
+            genre: testGenreOne.id,
             ISBN: '9780140430721',
           }),
           Book.create({ 
             title: 'The Illiad', 
-            author: 'Homer', 
-            genre: 'Epic poetry', 
+            author: testAuthorTwo.id,
+            genre: testGenreTwo.id,
             ISBN: '9780800042011'
           }),
           Book.create({
             title: 'Nineteen Eighty-Four',
-            author: 'George Orwell',
-            genre: 'Dystopian',
+            author: testAuthorThree.id,
+            genre: testGenreThree.id,
             ISBN: '9780140817744'
           }),
         ]);
@@ -107,8 +140,6 @@ describe('/books', () => {
                 const expected = books.find((a) => a.id === book.id);
 
                 expect(book.title).to.equal(expected.title);
-                expect(book.author).to.equal(expected.author);
-                expect(book.genre).to.equal(expected.genre);
                 expect(book.ISBN).to.equal(expected.ISBN);
             });
         });

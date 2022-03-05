@@ -14,20 +14,6 @@ module.exports = (connection, DataTypes) => {
                 },
             },
         },
-        author: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                notEmpty: {
-                    args: [true],
-                    msg: 'A author must be entered.',
-                },
-                notNull: {
-                    args: [true],
-                    msg: 'A author must be entered.',
-                },
-            },
-        },
         ISBN: {
             type: 
             DataTypes.STRING,
